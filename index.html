@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chill Chill Space ☕✨</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1c29, #2b3a4a);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            transition: background 1s ease;
+            padding: 30px 0;
+        }
+
+        /* Hiệu ứng mưa */
+        .rain {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+
+        .drop {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.2);
+            width: 1px; height: 20px; opacity: 0.7;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px); }
+            100% { transform: translateY(105vh); }
+        }
+
+        /* Hiệu ứng nền sao */
+        .stars {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Container chính */
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 25px;
+            border-radius: 24px;
+            width: 440px;
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: #ffecd2;
+            letter-spacing: 0.5px;
+        }
+
+        p.subtitle {
+            font-size: 0.85rem;
+            color: #b0c4de;
+            margin-bottom: 20px;
+        }
+
+        /* Khung tính năng */
+        .box-section {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 15px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .box-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #ffecd2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Vòng tròn hít thở */
+        .breathing-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px 0;
+        }
+
+        .circle {
+            width: 85px;
+            height: 85px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 4s ease-in-out;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .circle.grow {
+            transform: scale(1.25);
+            border-color: #ff758c;
+            background: rgba(255, 117, 140, 0.12);
+        }
+
+        #breathText {
+            font-size: 0.78rem;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        /* Lựa chọn không gian (Themes) */
+        .theme-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .theme-btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+        }
+
+        /* Đồng hồ Pomodoro Mini & Cài đặt thời gian */
+        .pomodoro-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .pomo-control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .timer-display {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffecd2;
+            font-family: monospace;
+            letter-spacing: 1px;
+        }
+
+        .time-input-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .time-input {
+            width: 65px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 5px 8px;
+            color: white;
+            outline: none;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        /* Khu vực Mini Game Quẻ Tâm Trạng */
+        .fortune-box {
+            font-size: 0.82rem;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+            text-align: center;
+            color: #ffecd2;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Ô nhập số gieo quẻ */
+        .number-input-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .number-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 6px 10px;
+            color: white;
+            outline: none;
+            font-size: 0.85rem;
+        }
+
+        .number-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Giao diện nhập tâm trạng */
+        textarea {
+            width: 100%;
+            height: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 8px;
+            color: white;
+            resize: none;
+            font-size: 0.85rem;
+            outline: none;
+            margin-bottom: 8px;
+        }
+
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        #syncStatus {
+            font-size: 0.75rem;
+            color: #b0c4de;
+            display: none;
+        }
+    </style>
+</head>
+<body id="bodyBg">
+
+    <!-- Hiệu ứng nền sao -->
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- Lớp phủ hiệu ứng mưa -->
+    <div class="rain" id="rain"></div>
+
+    <div class="container">
+        <h1>☕ Chill Space</h1>
+        <p class="subtitle">Thả lỏng cơ thể và tận hưởng khoảnh khắc này...</p>
+
+        <!-- 1. Trình phát âm thanh môi trường -->
+        <div class="box-section">
+            <div class="box-title">
+                <span>Trình phát âm thanh</span>
+                <span id="statusText" style="font-size: 0.78rem; color: #b0c4de;">Đang yên bình 🍃</span>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <select id="soundSelect" style="background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 6px; border-radius: 8px; outline: none; font-size: 0.82rem; flex: 1;">
+                    <option value="rain">🌧️ Tiếng mưa rơi</option>
+                    <option value="waves">🌊 Tiếng sóng biển</option>
+                </select>
+                <button id="toggleBtn" onclick="toggleSound()">Bật âm thanh</button>
+            </div>
+        </div>
+
+        <!-- 2. Đồng hồ tĩnh tâm (Pomodoro) có thêm ô nhập thời gian tùy chỉnh -->
+        <div class="box-section">
+            <div class="box-title">Đồng hồ tĩnh tâm (Pomodoro)</div>
+            <div class="pomodoro-box">
+                <div class="pomo-control-row">
+                    <div class="timer-display" id="pomoTimer">25:00</div>
+                    <div style="display: flex; gap: 6px;">
+                        <button id="pomoBtn" onclick="togglePomodoro()" style="font-size: 0.75rem; padding: 6px 12px;">Bắt đầu</button>
+                        <button onclick="resetPomodoro()" style="font-size: 0.75rem; padding: 6px 10px; background: rgba(255,255,255,0.1); box-shadow: none;">Reset</button>
+                    </div>
+                </div>
+                <!-- Ô cài đặt số phút -->
+                <div class="time-input-group" style="margin-top: 6px; justify-content: flex-end;">
+                    <span style="font-size: 0.75rem; color: #b0c4de;">Chỉnh phút:</span>
+                    <input type="number" id="customMinutes" class="time-input" min="1" max="180" value="25">
+                    <button onclick="setCustomTime()" style="font-size: 0.72rem; padding: 4px 10px;">Đặt giờ</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Vòng tròn hít thở -->
+        <div class="box-section">
+            <div class="box-title">Bài tập hít thở nhanh</div>
+            <div class="breathing-container">
+                <div class="circle" id="breathCircle">
+                    <span id="breathText">Nhấn Bắt đầu</span>
+                </div>
+                <button id="breathBtn" onclick="toggleBreathing()" style="font-size: 0.75rem; padding: 5px 15px;">Bắt đầu hít thở</button>
+            </div>
+        </div>
+
+        <!-- 4. Đổi không gian màu sắc -->
+        <div class="box-section">
+            <div class="box-title">Chọn không gian màu</div>
+            <div class="theme-buttons">
+                <button class="theme-btn" onclick="setTheme('night')">🌙 Đêm Mưa</button>
+                <button class="theme-btn" onclick="setTheme('sunset')">🌅 Hoàng Hôn</button>
+                <button class="theme-btn" onclick="setTheme('forest')">🌲 Rừng Xanh</button>
+            </div>
+        </div>
+
+        <!-- 5. GIẢI TRÍ: Gieo quẻ tâm trạng & Chọn số -->
+        <div class="box-section">
+            <div class="box-title">Gieo quẻ tâm trạng hôm nay 🥠</div>
+            <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+                <button onclick="drawFortune()" style="font-size: 0.75rem; padding: 6px 16px;">Rút quẻ ngẫu nhiên</button>
+            </div>
+            
+            <div class="number-input-group">
+                <input type="number" id="luckyNum" class="number-input" min="1" max="99" placeholder="Hoặc nhập một con số (1-99)...">
+                <button onclick="drawNumberFortune()" style="font-size: 0.75rem; padding: 6px 14px;">Gieo theo số</button>
+            </div>
+
+            <div class="fortune-box" id="fortuneText">Nhấn nút bên trên để xem thông điệp dành riêng cho bạn hôm nay nhé! ✨</div>
+        </div>
+
+        <!-- 6. Góc ghi chú gửi ngầm Sheets -->
+        <div class="box-section" style="margin-bottom: 0;">
+            <div class="box-title" style="margin-bottom: 5px;">Góc suy nghĩ vẩn vơ</div>
+            <textarea id="mindNotes" placeholder="Hôm nay bạn thấy thế nào? Ghi lại đây nhé..."></textarea>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="syncStatus">Đã gửi đi thành công! ✨</span>
+                <button onclick="sendSilently()" style="font-size: 0.75rem; padding: 6px 16px;">Gửi đi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tạo hạt sao lấp lánh
+        const starsContainer = document.getElementById('starsContainer');
+        for (let i = 0; i < 35; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.animationDuration = `${2 + Math.random() * 3}s`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            starsContainer.appendChild(star);
+        }
+
+        // Hiệu ứng mưa rơi
+        const rainContainer = document.getElementById('rain');
+        for (let i = 0; i < 45; i++) {
+            const drop = document.createElement('div');
+            drop.classList.add('drop');
+            drop.style.left = `${Math.random() * 100}vw`;
+            drop.style.top = `${Math.random() * -100}px`;
+            drop.style.animationDuration = `${0.5 + Math.random() * 1}s`;
+            drop.style.animationDelay = `${Math.random() * 2}s`;
+            rainContainer.appendChild(drop);
+        }
+
+        // Tính năng rút quẻ ngẫu nhiên
+        const fortunes = [
+            "Hôm nay mọi việc sẽ suôn sẻ bất ngờ, cứ thong thả mà tận hưởng nhé! 🍀",
+            "Đừng lo nghĩ nhiều quá, một ly trà nóng và một bản nhạc hay sẽ giải quyết tất cả. ☕",
+            "Cố gắng quá nhiều rồi, hôm nay hãy cho phép bản thân lười biếng một chút đi! 🦥",
+            "Vận may tài chính và tinh thần đang mỉm cười với bạn trong tuần này. ✨",
+            "Cứ đi chậm thôi, miễn là bạn không dừng lại. Mọi thứ đang tiến triển rất tốt! 🐢",
+            "Một tin nhắn bất ngờ từ người quen cũ hoặc một món quà nhỏ đang chờ bạn đấy. 🎁"
+        ];
+
+        function drawFortune() {
+            const box = document.getElementById('fortuneText');
+            const randomMsg = fortunes[Math.floor(Math.random() * fortunes.length)];
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.textContent = randomMsg;
+                box.style.opacity = 1;
+            }, 200);
+        }
+
+        // Gieo quẻ theo số người dùng chọn
+        const numberFortunes = [
+            "Đại cát đại lợi! Việc bạn đang mong chờ sẽ có kết quả tốt đẹp vượt mong đợi.",
+            "Vũ trụ nhắn nhủ: Hãy kiên nhẫn thêm chút nữa, thành quả ngọt ngào sắp đến gần.",
+            "Hôm nay rất thích hợp để bắt đầu một thói quen mới hoặc giải quyết việc tồn đọng.",
+            "Có quý nhân phù trợ! Bạn sẽ nhận được lời khuyên đúng đắn từ một người bạn.",
+            "Hãy thả lỏng, đôi khi việc không làm gì cả lại là cách nghỉ ngơi tốt nhất cho tâm hồn."
+        ];
+
+        function drawNumberFortune() {
+            const input = document.getElementById('luckyNum').value;
+            const box = document.getElementById('fortuneText');
+            if (!input) {
+                box.textContent = "Vui lòng nhập một con số vào ô trước nhé! 🔢";
+                return;
+            }
+            const selectedMsg = numberFortunes[Math.floor(Math.abs(input) % numberFortunes.length)];
+            box.style.opacity = 0;
+            setTimeout(() => {
+                box.textContent = `Quẻ số [${input}]: ` + selectedMsg;
+                box.style.opacity = 1;
+            }, 200);
+        }
+
+        // Đổi màu không gian
+        function setTheme(theme) {
+            const body = document.getElementById('bodyBg');
+            if (theme === 'night') {
+                body.style.background = 'linear-gradient(135deg, #1a1c29, #2b3a4a)';
+            } else if (theme === 'sunset') {
+                body.style.background = 'linear-gradient(135deg, #2c163a, #5c324c)';
+            } else if (theme === 'forest') {
+                body.style.background = 'linear-gradient(135deg, #132219, #1b382b)';
+            }
+        }
+
+        // Âm thanh môi trường
+        let audioCtx = null;
+        let noiseNode = null;
+        let gainNode = null;
+        let isPlaying = false;
+        let waveInterval = null;
+
+        function toggleSound() {
+            const btn = document.getElementById('toggleBtn');
+            const statusText = document.getElementById('statusText');
+            const soundType = document.getElementById('soundSelect').value;
+
+            if (!isPlaying) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const bufferSize = 2 * audioCtx.sampleRate;
+                const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                noiseNode = audioCtx.createBufferSource();
+                noiseNode.buffer = noiseBuffer;
+                noiseNode.loop = true;
+
+                const filter = audioCtx.createBiquadFilter();
+                gainNode = audioCtx.createGain();
+
+                if (soundType === 'rain') {
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 800;
+                    gainNode.gain.value = 0.15;
+                    statusText.textContent = 'Đang nghe tiếng mưa 🌧️';
+                } else {
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 400;
+                    gainNode.gain.value = 0.2;
+                    
+                    let waveTimer = 0;
+                    waveInterval = setInterval(() => {
+                        if(!audioCtx) return;
+                        waveTimer += 0.05;
+                        filter.frequency.value = 300 + Math.sin(waveTimer) * 200;
+                    }, 100);
+                    statusText.textContent = 'Đang nghe sóng biển 🌊';
+                }
+
+                noiseNode.connect(filter);
+                filter.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                noiseNode.start();
+                isPlaying = true;
+                btn.textContent = 'Tắt âm thanh';
+            } else {
+                stopSound();
+                btn.textContent = 'Bật âm thanh';
+                statusText.textContent = 'Đang yên bình 🍃';
+            }
+        }
+
+        function stopSound() {
+            if (noiseNode) { noiseNode.stop(); noiseNode = null; }
+            if (audioCtx) { audioCtx.close(); audioCtx = null; }
+            if (waveInterval) { clearInterval(waveInterval); waveInterval = null; }
+            isPlaying = false;
+        }
+
+        // Pomodoro & Custom Time Logic
+        let pomoSeconds = 25 * 60;
+        let pomoInterval = null;
+        let isPomoRunning = false;
+
+        function updateTimerDisplay() {
+            let m = Math.floor(pomoSeconds / 60);
+            let s = pomoSeconds % 60;
+            document.getElementById('pomoTimer').textContent = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function setCustomTime() {
+            clearInterval(pomoInterval);
+            isPomoRunning = false;
+            document.getElementById('pomoBtn').textContent = 'Bắt đầu';
+            
+            const minutesInput = document.getElementById('customMinutes').value;
+            let mins = parseInt(minutesInput);
+            if (isNaN(mins) || mins <= 0) mins = 25;
+            
+            pomoSeconds = mins * 60;
+            updateTimerDisplay();
+        }
+
+        function togglePomodoro() {
+            const pomoBtn = document.getElementById('pomoBtn');
+
+            if (!isPomoRunning) {
+                isPomoRunning = true;
+                pomoBtn.textContent = 'Tạm dừng';
+                pomoInterval = setInterval(() => {
+                    if (pomoSeconds > 0) {
+                        pomoSeconds--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(pomoInterval);
+                        isPomoRunning = false;
+                        alert("Đã hoàn thành phiên tĩnh tâm! ✨");
+                        pomoBtn.textContent = 'Bắt đầu';
+                    }
+                }, 1000);
+            } else {
+                isPomoRunning = false;
+                clearInterval(pomoInterval);
+                pomoBtn.textContent = 'Tiếp tục';
+            }
+        }
+
+        function resetPomodoro() {
+            clearInterval(pomoInterval);
+            isPomoRunning = false;
+            const minutesInput = document.getElementById('customMinutes').value;
+            let mins = parseInt(minutesInput);
+            if (isNaN(mins) || mins <= 0) mins = 25;
+            
+            pomoSeconds = mins * 60;
+            updateTimerDisplay();
+            document.getElementById('pomoBtn').textContent = 'Bắt đầu';
+        }
+
+        // Hít thở
+        let breathInterval = null;
+        let isBreathing = false;
+
+        function toggleBreathing() {
+            const circle = document.getElementById('breathCircle');
+            const breathText = document.getElementById('breathText');
+            const breathBtn = document.getElementById('breathBtn');
+
+            if (!isBreathing) {
+                isBreathing = true;
+                breathBtn.textContent = 'Dừng lại';
+                
+                const runCycle = () => {
+                    breathText.textContent = 'Hít vào...';
+                    circle.classList.add('grow');
+                    
+                    setTimeout(() => {
+                        if (!isBreathing) return;
+                        breathText.textContent = 'Giữ hơi...';
+                    }, 4000);
+
+                    setTimeout(() => {
+                        if (!isBreathing) return;
+                        breathText.textContent = 'Thở ra...';
+                        circle.classList.remove('grow');
+                    }, 7000);
+                };
+
+                runCycle();
+                breathInterval = setInterval(runCycle, 11000);
+            } else {
+                isBreathing = false;
+                clearInterval(breathInterval);
+                circle.classList.remove('grow');
+                breathText.textContent = 'Nhấn Bắt đầu';
+                breathBtn.textContent = 'Bắt đầu hít thở';
+            }
+        }
+
+        // Gửi ngầm Google Sheets
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXuki5bp7Dsk_sNp_-YpxdQ3Ghkl3TE0aAz2fVKfP2reDiI8yBK4Wt_30S35RmBMkNqQ/exec";
+
+        async function sendSilently() {
+            const textarea = document.getElementById('mindNotes');
+            const syncStatus = document.getElementById('syncStatus');
+            const noteText = textarea.value.trim();
+            if (!noteText) return;
+
+            const dateString = new Date().toLocaleString();
+            textarea.value = ''; 
+
+            syncStatus.style.display = "inline";
+            syncStatus.textContent = "Đã gửi đi thành công! ✨";
+            setTimeout(() => { syncStatus.style.display = "none"; }, 2500);
+
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ date: dateString, text: noteText })
+                });
+            } catch (error) {
+                console.error("Lỗi gửi dữ liệu:", error);
+            }
+        }
+    </script>
+</body>
+</html>
