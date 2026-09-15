@@ -25,7 +25,6 @@
             padding: 30px 0;
         }
 
-        /* Hiệu ứng mưa */
         .rain {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,7 +43,6 @@
             100% { transform: translateY(105vh); }
         }
 
-        /* Hiệu ứng nền sao */
         .stars {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -65,7 +63,6 @@
             50% { opacity: 0.8; }
         }
 
-        /* Container chính */
         .container {
             position: relative;
             z-index: 2;
@@ -92,7 +89,6 @@
             margin-bottom: 20px;
         }
 
-        /* Khung tính năng */
         .box-section {
             background: rgba(0, 0, 0, 0.25);
             padding: 15px;
@@ -129,7 +125,6 @@
             transform: translateY(-2px);
         }
 
-        /* Vòng tròn hít thở */
         .breathing-container {
             display: flex;
             flex-direction: column;
@@ -164,7 +159,6 @@
             text-align: center;
         }
 
-        /* Lựa chọn không gian (Themes) */
         .theme-buttons {
             display: flex;
             gap: 8px;
@@ -179,7 +173,6 @@
             box-shadow: none;
         }
 
-        /* Đồng hồ Pomodoro Mini & Cài đặt thời gian */
         .pomodoro-box {
             display: flex;
             flex-direction: column;
@@ -218,7 +211,6 @@
             text-align: center;
         }
 
-        /* Khu vực Mini Game Quẻ Tâm Trạng */
         .fortune-box {
             font-size: 0.82rem;
             background: rgba(255, 255, 255, 0.06);
@@ -227,14 +219,13 @@
             margin-top: 8px;
             text-align: center;
             color: #ffecd2;
-            min-height: 40px;
+            min-height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: opacity 0.3s ease;
         }
 
-        /* Ô nhập số gieo quẻ */
         .number-input-group {
             display: flex;
             gap: 8px;
@@ -256,7 +247,6 @@
             color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Giao diện nhập tâm trạng */
         textarea {
             width: 100%;
             height: 60px;
@@ -280,21 +270,24 @@
             color: #b0c4de;
             display: none;
         }
+
+        .footer-copyright {
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body id="bodyBg">
 
-    <!-- Hiệu ứng nền sao -->
     <div class="stars" id="starsContainer"></div>
-
-    <!-- Lớp phủ hiệu ứng mưa -->
     <div class="rain" id="rain"></div>
 
     <div class="container">
         <h1>☕ Chill Space</h1>
         <p class="subtitle">Thả lỏng cơ thể và tận hưởng khoảnh khắc này...</p>
 
-        <!-- 1. Trình phát âm thanh môi trường -->
         <div class="box-section">
             <div class="box-title">
                 <span>Trình phát âm thanh</span>
@@ -309,7 +302,6 @@
             </div>
         </div>
 
-        <!-- 2. Đồng hồ tĩnh tâm (Pomodoro) có thêm ô nhập thời gian tùy chỉnh -->
         <div class="box-section">
             <div class="box-title">Đồng hồ tĩnh tâm (Pomodoro)</div>
             <div class="pomodoro-box">
@@ -320,7 +312,6 @@
                         <button onclick="resetPomodoro()" style="font-size: 0.75rem; padding: 6px 10px; background: rgba(255,255,255,0.1); box-shadow: none;">Reset</button>
                     </div>
                 </div>
-                <!-- Ô cài đặt số phút -->
                 <div class="time-input-group" style="margin-top: 6px; justify-content: flex-end;">
                     <span style="font-size: 0.75rem; color: #b0c4de;">Chỉnh phút:</span>
                     <input type="number" id="customMinutes" class="time-input" min="1" max="180" value="25">
@@ -329,7 +320,6 @@
             </div>
         </div>
 
-        <!-- 3. Vòng tròn hít thở -->
         <div class="box-section">
             <div class="box-title">Bài tập hít thở nhanh</div>
             <div class="breathing-container">
@@ -340,7 +330,6 @@
             </div>
         </div>
 
-        <!-- 4. Đổi không gian màu sắc -->
         <div class="box-section">
             <div class="box-title">Chọn không gian màu</div>
             <div class="theme-buttons">
@@ -350,7 +339,6 @@
             </div>
         </div>
 
-        <!-- 5. GIẢI TRÍ: Gieo quẻ tâm trạng & Chọn số -->
         <div class="box-section">
             <div class="box-title">Gieo quẻ tâm trạng hôm nay 🥠</div>
             <div style="display: flex; justify-content: center; margin-bottom: 8px;">
@@ -365,7 +353,6 @@
             <div class="fortune-box" id="fortuneText">Nhấn nút bên trên để xem thông điệp dành riêng cho bạn hôm nay nhé! ✨</div>
         </div>
 
-        <!-- 6. Góc ghi chú gửi ngầm Sheets -->
         <div class="box-section" style="margin-bottom: 0;">
             <div class="box-title" style="margin-bottom: 5px;">Góc suy nghĩ vẩn vơ</div>
             <textarea id="mindNotes" placeholder="Hôm nay bạn thấy thế nào? Ghi lại đây nhé..."></textarea>
@@ -374,10 +361,13 @@
                 <button onclick="sendSilently()" style="font-size: 0.75rem; padding: 6px 16px;">Gửi đi</button>
             </div>
         </div>
+
+        <div class="footer-copyright">
+            Copyright © Viethung. All rights reserved.
+        </div>
     </div>
 
     <script>
-        // Tạo hạt sao lấp lánh
         const starsContainer = document.getElementById('starsContainer');
         for (let i = 0; i < 35; i++) {
             const star = document.createElement('div');
@@ -389,7 +379,6 @@
             starsContainer.appendChild(star);
         }
 
-        // Hiệu ứng mưa rơi
         const rainContainer = document.getElementById('rain');
         for (let i = 0; i < 45; i++) {
             const drop = document.createElement('div');
@@ -401,14 +390,15 @@
             rainContainer.appendChild(drop);
         }
 
-        // Tính năng rút quẻ ngẫu nhiên
         const fortunes = [
-            "Hôm nay mọi việc sẽ suôn sẻ bất ngờ, cứ thong thả mà tận hưởng nhé! 🍀",
-            "Đừng lo nghĩ nhiều quá, một ly trà nóng và một bản nhạc hay sẽ giải quyết tất cả. ☕",
-            "Cố gắng quá nhiều rồi, hôm nay hãy cho phép bản thân lười biếng một chút đi! 🦥",
-            "Vận may tài chính và tinh thần đang mỉm cười với bạn trong tuần này. ✨",
-            "Cứ đi chậm thôi, miễn là bạn không dừng lại. Mọi thứ đang tiến triển rất tốt! 🐢",
-            "Một tin nhắn bất ngờ từ người quen cũ hoặc một món quà nhỏ đang chờ bạn đấy. 🎁"
+            "Hôm nay bạn rất dễ mất tiền, nhưng yên tâm là bạn cũng chẳng có tiền để mất đâu. 🤡",
+            "Tình duyên của bạn hôm nay cực sáng: Người yêu không có, mà chó cũng méo thèm nhìn. 🐕",
+            "Thần tài đang đứng trước cửa nhà bạn đấy, nhưng tiếc là ông ấy đang tìm nhà hàng xóm. 💸",
+            "Cố gắng làm việc chăm chỉ vào, sếp bạn đang chuẩn bị tậu siêu xe thứ hai rồi đấy! 🚗",
+            "Hôm nay đừng đầu tư cái gì hết, đầu tư giấc ngủ là lời nhất, ngủ đi bạn êi! 🦥",
+            "Tránh xa mạng xã hội ra, không là bạn lại trầm cảm vì thấy tụi nó khoe người yêu đấy. 📱",
+            "Vận may đang mỉm cười với bạn... nhưng chắc nó cười đểu đấy, cẩn thận vào! 😏",
+            "Đừng buồn vì ế, người ta có đôi có cặp còn bạn thì tự do tự tại muốn bay nhảy đâu cũng được. 🦅"
         ];
 
         function drawFortune() {
@@ -421,20 +411,19 @@
             }, 200);
         }
 
-        // Gieo quẻ theo số người dùng chọn
         const numberFortunes = [
-            "Đại cát đại lợi! Việc bạn đang mong chờ sẽ có kết quả tốt đẹp vượt mong đợi.",
-            "Vũ trụ nhắn nhủ: Hãy kiên nhẫn thêm chút nữa, thành quả ngọt ngào sắp đến gần.",
-            "Hôm nay rất thích hợp để bắt đầu một thói quen mới hoặc giải quyết việc tồn đọng.",
-            "Có quý nhân phù trợ! Bạn sẽ nhận được lời khuyên đúng đắn từ một người bạn.",
-            "Hãy thả lỏng, đôi khi việc không làm gì cả lại là cách nghỉ ngơi tốt nhất cho tâm hồn."
+            "Số này đẹp đấy, chuẩn bị tinh thần ăn hành ngập mặt đi là vừa! 🧅",
+            "Quẻ số này báo hiệu hôm nay bạn sẽ ăn vạ thành công nếu đòi quà người yêu. 🎁",
+            "Con số này nói lên rằng: Bạn đang đói bụng và thèm trà sữa vl rồi chứ gì? 🧋",
+            "Đại họa sắp tới: Chuẩn bị tiền nộp phạt rớt ví hoặc mất xe buýt đi cưng! 🚌",
+            "Quẻ cực linh: Đóng máy đi ngủ đi, thức khuya rụng tóc thành sư thầy bây giờ! 👨‍🦲"
         ];
 
         function drawNumberFortune() {
             const input = document.getElementById('luckyNum').value;
             const box = document.getElementById('fortuneText');
             if (!input) {
-                box.textContent = "Vui lòng nhập một con số vào ô trước nhé! 🔢";
+                box.textContent = "Nhập số vào mới bói được chứ lị! 🔢";
                 return;
             }
             const selectedMsg = numberFortunes[Math.floor(Math.abs(input) % numberFortunes.length)];
@@ -445,7 +434,6 @@
             }, 200);
         }
 
-        // Đổi màu không gian
         function setTheme(theme) {
             const body = document.getElementById('bodyBg');
             if (theme === 'night') {
@@ -457,7 +445,6 @@
             }
         }
 
-        // Âm thanh môi trường
         let audioCtx = null;
         let noiseNode = null;
         let gainNode = null;
@@ -526,7 +513,6 @@
             isPlaying = false;
         }
 
-        // Pomodoro & Custom Time Logic
         let pomoSeconds = 25 * 60;
         let pomoInterval = null;
         let isPomoRunning = false;
@@ -563,7 +549,7 @@
                     } else {
                         clearInterval(pomoInterval);
                         isPomoRunning = false;
-                        alert("Đã hoàn thành phiên tĩnh tâm! ✨");
+                        alert("Hết giờ rồi, đứng dậy đi quẩy thôi! 🎉");
                         pomoBtn.textContent = 'Bắt đầu';
                     }
                 }, 1000);
@@ -586,7 +572,6 @@
             document.getElementById('pomoBtn').textContent = 'Bắt đầu';
         }
 
-        // Hít thở
         let breathInterval = null;
         let isBreathing = false;
 
@@ -626,7 +611,6 @@
             }
         }
 
-        // Gửi ngầm Google Sheets
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzXuki5bp7Dsk_sNp_-YpxdQ3Ghkl3TE0aAz2fVKfP2reDiI8yBK4Wt_30S35RmBMkNqQ/exec";
 
         async function sendSilently() {
